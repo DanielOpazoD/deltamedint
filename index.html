@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Estudio: Medicina Interna</title>
+    
+    <!-- Librería de Quill.js -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Librerías para PDF y Quill.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js" defer></script>
+
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>💻 Guía de Estudio: Medicina Interna</h1>
+        <div class="global-actions">
+            <button disabled>✨ Asistente IA</button>
+            <button disabled>⬆️ Importar Todo</button>
+            <button disabled>⬇️ Exportar Todo</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="filters-container">
+            <input type="search" id="search-bar" placeholder="🔍 Buscar tema por nombre o número...">
+            <div class="confidence-filters">
+                <span>Filtrar por confianza:</span>
+                <button data-filter="neutral">⚪ No clasificado</button>
+                <button data-filter="all" class="active">Todos</button>
+                <button data-filter="green">🟢 Dominado</button>
+                <button data-filter="yellow">🟡 En Progreso</button>
+                <button data-filter="red">🔴 Por Empezar</button>
+            </div>
+        </div>
+
+        <div id="topic-list-container">
+            <!-- El contenido de los temas se generará aquí con JavaScript -->
+        </div>
+    </main>
+
+    <!-- ======== ESTRUCTURA DEL MODAL DE NOTAS (NUEVO) ======== -->
+    <div id="notes-modal" class="hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="modal-topic-title">Notas del Tema</h2>
+                <button id="modal-close-button-x" class="close-button">×</button>
+            </header>
+            <div class="modal-body">
+                <div id="toolbar-container">
+                    <!-- La barra de herramientas de Quill se generará aquí -->
+                </div>
+                <div id="editor-container"></div>
+            </div>
+            <footer class="modal-footer">
+                <button id="modal-delete-button" class="danger-button">🗑️ Eliminar</button>
+                <div class="footer-actions-right">
+                    <button id="modal-close-button">Cerrar</button>
+                    <button id="modal-save-button">Guardar</button>
+                    <button id="modal-save-close-button" class="primary-button">Guardar y Cerrar</button>
+                    <button id="modal-pdf-button">💾 Guardar como PDF</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
+Use code with caution.
+Html
+Paso 2: Actualizar style.css
+Acción: Añade el siguiente bloque de código al final de tu archivo style.css. No reemplaces el contenido existente, solo agrégalo.
+¿Qué hay de nuevo?
+Estilos para el modal: el fondo oscuro (overlay), la ventana de notas, su cabecera, cuerpo y pie de página.
+Estilos para la barra de herramientas y el contenedor del editor de Quill.js.
+Generated css
+/* --- Estilos para el Modal de Notas (Añadir al final del archivo) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+#notes-modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 90%;
+    max-width: 900px;
+    height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+    color: #666;
+}
+
+.modal-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Importante para que el scroll esté en el editor */
+}
+
+#toolbar-container {
+    border-bottom: 1px solid var(--border-color);
+    background-color: #f7f7f7;
+}
+
+#editor-container {
+    height: 100%; /* El editor ocupa el espacio restante */
+    overflow-y: auto; /* Scroll dentro del editor */
+    font-size: 16px;
+}
+.ql-editor {
+    padding: 20px !important;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-top: 1px solid var(--border-color);
+    background-color: #f7f7f7;
+}
+
+.modal-footer button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.modal-footer .primary-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+.modal-footer .danger-button {
+    background-color: var(--red);
+    color: #fff;
+    border-color: var(--red);
+}
+
+.col-actions button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+.col-actions button.has-notes {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
