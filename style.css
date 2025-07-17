@@ -1,0 +1,278 @@
+/* --- Estilos Globales y de Fuente --- */
+:root {
+    --primary-color: #007bff;
+    --border-color: #e0e0e0;
+    --background-color: #f8f9fa;
+    --text-color: #333;
+    --red: #dc3545;
+    --yellow: #ffc107;
+    --green: #28a745;
+    --neutral-border: #adb5bd;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+}
+
+/* --- Encabezado --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 1.8em;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+/* --- Contenedor Principal y Filtros --- */
+.filters-container {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+#search-bar {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.confidence-filters button {
+    padding: 8px 12px;
+    margin: 0 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.confidence-filters button:hover {
+    background-color: #f0f0f0;
+}
+
+.confidence-filters button.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+/* --- Lista de Temas --- */
+.topic-section {
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1em;
+    border-bottom: 1px solid var(--border-color);
+}
+.section-header:hover {
+    background-color: #e9e9e9;
+}
+
+.section-header::before {
+    content: '▼';
+    margin-right: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+.section-header.collapsed::before {
+    transform: rotate(-90deg);
+}
+
+.topic-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.topic-table th, .topic-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.topic-table tr:last-child td {
+    border-bottom: none;
+}
+.topic-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.topic-table th {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    color: #6c757d;
+}
+
+.topic-table td.col-id, .topic-table th.col-id { width: 5%; }
+.topic-table td.col-confidence, .topic-table th.col-confidence { width: 10%; text-align: center; }
+.topic-table td.col-actions, .topic-table th.col-actions { width: 15%; }
+.topic-table td.col-resources, .topic-table th.col-resources { width: 10%; }
+
+
+.confidence-marker {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-block;
+    border: 2px solid transparent;
+    transition: transform 0.1s;
+}
+.confidence-marker:hover {
+    transform: scale(1.1);
+}
+
+.confidence-marker.neutral {
+    background-color: #fff;
+    border-color: var(--neutral-border);
+}
+.confidence-marker.red { background-color: var(--red); }
+.confidence-marker.yellow { background-color: var(--yellow); }
+.confidence-marker.green { background-color: var(--green); }
+
+
+/* --- Clases de utilidad --- */
+.hidden {
+    display: none;
+}
+/* --- Estilos para el Modal de Notas (Añadir al final del archivo) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+#notes-modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 90%;
+    max-width: 900px;
+    height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+    color: #666;
+}
+
+.modal-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Importante para que el scroll esté en el editor */
+}
+
+#toolbar-container {
+    border-bottom: 1px solid var(--border-color);
+    background-color: #f7f7f7;
+}
+
+#editor-container {
+    height: 100%; /* El editor ocupa el espacio restante */
+    overflow-y: auto; /* Scroll dentro del editor */
+    font-size: 16px;
+}
+.ql-editor {
+    padding: 20px !important;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-top: 1px solid var(--border-color);
+    background-color: #f7f7f7;
+}
+
+.modal-footer button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.modal-footer .primary-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+.modal-footer .danger-button {
+    background-color: var(--red);
+    color: #fff;
+    border-color: var(--red);
+}
+
+.col-actions button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+.col-actions button.has-notes {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
