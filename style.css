@@ -1,309 +1,241 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // La misma base de datos de 84 temas va aquí...
-    const topicsData = [
-        { id: 1, section: "I.- TEMAS CARDIOVASCULARES", name: "Insuficiencia Cardíaca: Fisiopatología y tratamiento" },
-        { id: 2, section: "I.- TEMAS CARDIOVASCULARES", name: "Edema Pulmonar Agudo cardiogénico" },
-        { id: 3, section: "I.- TEMAS CARDIOVASCULARES", name: "Hipertensión Arterial" },
-        { id: 4, section: "I.- TEMAS CARDIOVASCULARES", name: "Cardiopatía Isquémica: Síndrome coronario agudo" },
-        { id: 5, section: "I.- TEMAS CARDIOVASCULARES", name: "Infarto agudo del miocardio: Diagnóstico y tratamiento" },
-        { id: 6, section: "I.- TEMAS CARDIOVASCULARES", name: "Estenosis Aórtica Calcificada" },
-        { id: 7, section: "I.- TEMAS CARDIOVASCULARES", name: "Insuficiencia Aórtica" },
-        { id: 8, section: "I.- TEMAS CARDIOVASCULARES", name: "Endocarditis Infecciosa: Diagnóstico y tratamiento" },
-        { id: 9, section: "I.- TEMAS CARDIOVASCULARES", name: "Miocarditis" },
-        { id: 10, section: "I.- TEMAS CARDIOVASCULARES", name: "Miocardiopatías: Diagnóstico y tratamiento" },
-        { id: 11, section: "I.- TEMAS CARDIOVASCULARES", name: "Pericarditis" },
-        { id: 12, section: "I.- TEMAS CARDIOVASCULARES", name: "Enfermedad Tromboembólica" },
-        { id: 13, section: "I.- TEMAS CARDIOVASCULARES", name: "Hipertensión arterial secundaria: Etiología y tratamiento" },
-        { id: 14, section: "I.- TEMAS CARDIOVASCULARES", name: "Hipertensión arterial esencial: Diagnóstico y tratamiento" },
-        { id: 15, section: "I.- TEMAS CARDIOVASCULARES", name: "Shock cardiogénico: Etiología y manejo" },
-        { id: 16, section: "I.- TEMAS CARDIOVASCULARES", name: "Fibrilación auricular: Tratamiento" },
-        { id: 17, section: "I.- TEMAS CARDIOVASCULARES", name: "Taquicardia paroxística supraventricular: Etiología y tratamiento" },
-        { id: 18, section: "II.- TEMAS NEUMOLÓGICOS", name: "Edema pulmonar no cardiogénico (SDRA)" },
-        { id: 19, section: "II.- TEMAS NEUMOLÓGICOS", name: "Hemoptisis" },
-        { id: 20, section: "II.- TEMAS NEUMOLÓGICOS", name: "Dolor toráxico: Diagnóstico diferencial" },
-        { id: 21, section: "II.- TEMAS NEUMOLÓGICOS", name: "Asma Bronquial" },
-        { id: 22, section: "II.- TEMAS NEUMOLÓGICOS", name: "EPOC: Diagnóstico y tratamiento" },
-        { id: 23, section: "II.- TEMAS NEUMOLÓGICOS", name: "Neumonía adquirida en la Comunidad: Etiología y tratamiento" },
-        { id: 24, section: "II.- TEMAS NEUMOLÓGICOS", name: "Neumonía en inmuno comprometido: Etiología y tratamiento" },
-        { id: 25, section: "II.- TEMAS NEUMOLÓGICOS", name: "Tuberculosis Pulmonar: Tratamiento" },
-        { id: 26, section: "II.- TEMAS NEUMOLÓGICOS", name: "Derrame pleural: Diagnóstico diferencial" },
-        { id: 27, section: "II.- TEMAS NEUMOLÓGICOS", name: "Cáncer Broncopulmonar" },
-        { id: 28, section: "II.- TEMAS NEUMOLÓGICOS", name: "Enfermedad intersticial difusa del pulmón: Diagnóstico diferencial y tratamiento" },
-        { id: 29, section: "III.- TEMAS NEFROLÓGICOS Y ALTERACIONES HIDROELECTROLÍTICAS", name: "Injuria renal aguda (AKI)" },
-        { id: 30, section: "III.- TEMAS NEFROLÓGICOS Y ALTERACIONES HIDROELECTROLÍTICAS", name: "Insuficiencia renal crónica: Etiología y tratamiento" },
-        { id: 31, section: "III.- TEMAS NEFROLÓGICOS Y ALTERACIONES HIDROELECTROLÍTICAS", name: "Glomerulonefritis aguda" },
-        { id: 32, section: "III.- TEMAS NEFROLÓGICOS Y ALTERACIONES HIDROELECTROLÍTICAS", name: "Pielonefritis aguda" },
-        { id: 33, section: "III.- TEMAS NEFROLÓGICOS Y ALTERACIONES HIDROELECTROLÍTICAS", name: "Síndrome nefrótico" },
-        { id: 34, section: "III.- TEMAS NEFROLÓGICOS Y ALTERACIONES HIDROELECTROLÍTICAS", name: "Hematurias" },
-        { id: 35, section: "III.- TEMAS NEFROLÓGICOS Y ALTERACIONES HIDROELECTROLÍTICAS", name: "Litiasis renal y Cólico renal" },
-        { id: 36, section: "III.- TEMAS NEFROLÓGICOS Y ALTERACIONES HIDROELECTROLÍTICAS", name: "Hiponatremia: Etiología y tratamiento" },
-        { id: 37, section: "III.- TEMAS NEFROLÓGICOS Y ALTERACIONES HIDROELECTROLÍTICAS", name: "Acidosis metabólica: Diagnóstico y tratamiento" },
-        { id: 38, section: "III.- TEMAS NEFROLÓGICOS Y ALTERACIONES HIDROELECTROLÍTICAS", name: "Hiperkalemia: Etiología y tratamiento" },
-        { id: 39, section: "IV.- TEMAS DIGESTIVOS", name: "Reflujo gastroesofágico" },
-        { id: 40, section: "IV.- TEMAS DIGESTIVOS", name: "Hemorragia digestiva alta" },
-        { id: 41, section: "IV.- TEMAS DIGESTIVOS", name: "Hemorragia digestiva baja" },
-        { id: 42, section: "IV.- TEMAS DIGESTIVOS", name: "Ulcera péptica" },
-        { id: 43, section: "IV.- TEMAS DIGESTIVOS", name: "Diarrea crónica: Etiología y tratamiento" },
-        { id: 44, section: "IV.- TEMAS DIGESTIVOS", name: "Diarrea aguda: Etiología y tratamiento" },
-        { id: 45, section: "IV.- TEMAS DIGESTIVOS", name: "Ictericias: Diagnóstico diferencial" },
-        { id: 46, section: "IV.- TEMAS DIGESTIVOS", name: "Hepatitis aguda: Diagnóstico y tratamiento" },
-        { id: 47, section: "IV.- TEMAS DIGESTIVOS", name: "Cirrosis hepáticas: Etiología, diagnóstico y tratamiento" },
-        { id: 48, section: "IV.- TEMAS DIGESTIVOS", name: "Pancreatitis aguda: Diagnóstico y tratamiento" },
-        { id: 49, section: "IV.- TEMAS DIGESTIVOS", name: "Enfermedad celíaca: Diagnóstico y tratamiento" },
-        { id: 50, section: "IV.- TEMAS DIGESTIVOS", name: "Enfermedad inflamatoria intestinal: Diagnóstico diferencial y tratamiento" },
-        { id: 51, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Síndrome metabólico" },
-        { id: 52, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Diabetes Mellitus tipo II" },
-        { id: 53, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Nefropatía diabética" },
-        { id: 54, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Cetoacidosis diabética e hiperosmolaridad" },
-        { id: 55, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Dislipidemias: Diagnóstico diferencial y tratamiento" },
-        { id: 56, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipertiroidismo: Diagnóstico diferencial y tratamiento" },
-        { id: 57, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipotiroidismo: Diagnóstico diferencial y tratamiento" },
-        { id: 58, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipercalcemia: Diagnóstico diferencial y tratamiento" },
-        { id: 59, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Insuficiencia Suprarrenal Aguda: Diagnóstico y tratamiento" },
-        { id: 60, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Anemia ferropriva: Diagnóstico y tratamiento" },
-        { id: 61, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Anemia megaloblástica: Diagnóstico y tratamiento" },
-        { id: 62, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Linfomas no Hodgkin: Diagnóstico y tratamiento" },
-        { id: 63, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Mieloma Múltiple: Diagnóstico y tratamiento" },
-        { id: 64, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Púrpura trombocitopénico: Etiología, diagnóstico y tratamiento" },
-        { id: 65, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Demencia: Etiología" },
-        { id: 66, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Síncope: Diagnóstico diferencial" },
-        { id: 67, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Coma: Diagnóstico diferencial" },
-        { id: 68, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Accidente cerebro vascular: Diagnóstico diferencial y tratamiento" },
-        { id: 69, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Meningitis bacteriana: Diagnóstico y tratamiento" },
-        { id: 70, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Enfermedad de Parkinson" },
-        { id: 71, "section": "VIII.- REUMATOLOGÍA", name: "Osteoporosis: Diagnóstico y tratamiento" },
-        { id: 72, "section": "VIII.- REUMATOLOGÍA", name: "Lupus Eritematoso Sistémico: Diagnóstico y tratamiento" },
-        { id: 73, "section": "VIII.- REUMATOLOGÍA", name: "Artritis Reumatoidea: Diagnóstico y tratamiento" },
-        { id: 74, "section": "VIII.- REUMATOLOGÍA", name: "Gota: Diagnóstico y tratamiento" },
-        { id: 75, "section": "VIII.- REUMATOLOGÍA", name: "Vasculitis: Diagnóstico diferencial y tratamiento" },
-        { id: 76, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Herpes Zóster: Diagnóstico y tratamiento" },
-        { id: 77, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Mononucleosis Infecciosa: Diagnóstico y tratamiento" },
-        { id: 78, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "VIH/SIDA" },
-        { id: 79, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Uretritis: Diagnóstico diferencial y tratamiento" },
-        { id: 80, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Shock Séptico: Manejo" },
-        { id: 81, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones en pacientes inmunodeprimidos No VIH" },
-        { id: 82, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Micosis de la piel" },
-        { id: 83, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Amebiasis y Giardiasis" },
-        { id: 84, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones bacterianas de la piel y partes blandas: Diagnóstico y tratamiento" }
-    ];
 
-    // ... (resto del código JS) ...
-    // --- ESTADO DE LA APLICACIÓN ---
-    let quill;
-    let openTabs = []; // Array de IDs de temas abiertos
-    let activeTabId = null;
-    let unsavedChanges = false;
-    
-    // --- ELEMENTOS DEL DOM ---
-    const topicListContainer = document.getElementById('topic-list-container');
-    const searchBar = document.getElementById('search-bar');
-    const confidenceFilters = document.querySelector('.confidence-filters');
-    const modal = document.getElementById('notes-modal');
-    const modalHeader = document.querySelector('.modal-header');
+/* --- Estilos Globales y de Fuente --- */
+:root {
+    --primary-color: #007bff;
+    --border-color: #e0e0e0;
+    --background-color: #f8f9fa;
+    --text-color: #333;
+    --red: #dc3545;
+    --yellow: #ffc107;
+    --green: #28a745;
+    --neutral-border: #adb5bd;
+}
 
-    // --- CONFIGURACIÓN DE QUILL.JS ---
-    function initializeQuill() {
-        if (quill) return;
-        const toolbarOptions = [
-            [{ 'header': [1, 2, 3, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'color': [] }, { 'background': [] }],
-            ['link', 'image'],
-            ['clean']
-        ];
-        quill = new Quill('#editor-container', {
-            modules: { toolbar: toolbarOptions },
-            theme: 'snow'
-        });
-        quill.on('text-change', () => { unsavedChanges = true; });
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 15px; /* Reducido */
+}
+
+/* --- Encabezado --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px; /* Reducido */
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 15px; /* Reducido */
+}
+
+header h1 {
+    font-size: 1.6em; /* Reducido */
+    color: var(--primary-color);
+    margin: 0;
+}
+
+/* --- Contenedor Principal y Filtros --- */
+.filters-container {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px; /* Reducido */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+#search-bar {
+    width: 100%;
+    padding: 8px 10px; /* Reducido */
+    font-size: 0.95em;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    margin-bottom: 10px; /* Reducido */
+}
+
+.confidence-filters button {
+    padding: 6px 10px; /* Reducido */
+    margin: 0 4px; /* Reducido */
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.9em;
+}
+
+.confidence-filters button:hover {
+    background-color: #f0f0f0;
+}
+
+.confidence-filters button.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+/* --- Lista de Temas --- */
+.topic-section {
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 10px; /* Reducido */
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.section-header {
+    display: flex;
+    justify-content: flex-start; /* CAMBIO: Alineado a la izquierda */
+    align-items: center;
+    padding: 10px 15px; /* Reducido */
+    background-color: #f1f1f1;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.05em;
+    border-bottom: 1px solid var(--border-color);
+}
+.section-header:hover { background-color: #e9e9e9; }
+
+.section-header::before {
+    content: '▶';
+    margin-right: 10px;
+    transition: transform 0.2s ease-in-out;
+    transform: rotate(-90deg); /* Flecha hacia la derecha por defecto */
+}
+.section-header.expanded::before {
+    transform: rotate(0deg); /* Flecha hacia abajo cuando está expandido */
+}
+
+.topic-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.topic-table th, .topic-table td {
+    padding: 8px 15px; /* Reducido */
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95em;
+}
+
+/* --- MODAL --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); z-index: 1000;
+}
+
+#notes-modal.hidden { display: none; }
+
+.modal-content {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff; width: 90%; max-width: 950px;
+    height: 90vh; border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1001;
+    display: flex; flex-direction: column;
+}
+
+.modal-header { padding: 10px 15px; border-bottom: 1px solid var(--border-color); }
+
+#modal-topic-title-input {
+    width: calc(100% - 40px);
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    padding: 5px;
+    border-radius: 4px;
+}
+#modal-topic-title-input:hover, #modal-topic-title-input:focus {
+    background-color: #f0f0f0;
+    outline: none;
+}
+
+.close-button {
+    background: none; border: none; font-size: 1.8em;
+    cursor: pointer; color: #666; position: absolute; top: 10px; right: 15px;
+}
+/* Estilos de Pestañas (NUEVO) */
+.modal-tabs-container {
+    display: flex;
+    background-color: #e9e9e9;
+    padding: 5px 5px 0 5px;
+    border-bottom: 1px solid var(--border-color);
+}
+.modal-tab {
+    padding: 8px 12px;
+    background-color: #f1f1f1;
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin-right: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    position: relative;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.modal-tab:hover { background-color: #fff; }
+.modal-tab.active { background-color: #fff; font-weight: bold; }
+.modal-tab .close-tab {
+    margin-left: 8px; font-weight: bold;
+    cursor: pointer; color: #999;
+}
+.modal-tab .close-tab:hover { color: #333; }
+
+
+.modal-body { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+#toolbar-container { border-bottom: 1px solid var(--border-color); background-color: #f7f7f7; }
+#editor-container { height: 100%; overflow-y: auto; font-size: 16px; }
+.ql-editor { padding: 20px !important; }
+
+.modal-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 15px; /* Reducido */
+    border-top: 1px solid var(--border-color); background-color: #f7f7f7;
+}
+
+.modal-footer button {
+    padding: 8px 12px; /* Reducido */
+    border-radius: 5px; border: 1px solid #ccc;
+    cursor: pointer; font-size: 0.85em; /* Reducido */
+}
+
+.modal-footer .primary-button { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+.modal-footer .danger-button { background-color: var(--red); color: #fff; border-color: var(--red); }
+
+/* --- Estilos de Impresión (NUEVO) --- */
+@media print {
+    body, header, main, .modal-footer, .modal-header, .modal-tabs-container, #toolbar-container {
+        display: none !important; /* Oculta todo lo que no queremos imprimir */
     }
-
-    // --- GESTIÓN DE DATOS (LOCALSTORAGE) ---
-    function getNotesFromStorage() {
-        return JSON.parse(localStorage.getItem('medNotes') || '{}');
+    #notes-modal {
+        /* Fuerza al modal y su contenido a ser lo único visible */
+        position: static !important;
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        max-width: none !important;
+        box-shadow: none !important;
+        border: none !important;
     }
-
-    function saveNoteToStorage(topicId, noteData) {
-        const notes = getNotesFromStorage();
-        notes[topicId] = noteData;
-        localStorage.setItem('medNotes', JSON.stringify(notes));
+    .modal-content {
+        position: static !important;
+        transform: none !important;
+        height: auto !important;
+        box-shadow: none !important;
+        border: none !important;
     }
-
-    function deleteNoteFromStorage(topicId) {
-        const notes = getNotesFromStorage();
-        delete notes[topicId];
-        localStorage.setItem('medNotes', JSON.stringify(notes));
+    .modal-body {
+        overflow: visible !important;
+        height: auto !important;
     }
-
-    // --- LÓGICA DEL MODAL Y PESTAÑAS ---
-    function openNoteInTab(topicId) {
-        if (!openTabs.includes(topicId)) {
-            openTabs.push(topicId);
-        }
-        activeTabId = topicId;
-        renderModalContent();
-        modal.classList.remove('hidden');
+    .ql-editor {
+        padding: 0 !important; /* Sin padding al imprimir */
+        font-size: 12pt !important; /* Tamaño de fuente estándar para impresión */
     }
-
-    function renderModalContent() {
-        // Renderizar pestañas
-        let tabsHtml = '<div class="modal-tabs-container">';
-        openTabs.forEach(id => {
-            const topic = topicsData.find(t => t.id == id);
-            tabsHtml += `<div class="modal-tab ${id == activeTabId ? 'active' : ''}" data-id="${id}">
-                            ${topic.id}. ${topic.name}
-                            <span class="close-tab" data-id="${id}">×</span>
-                         </div>`;
-        });
-        tabsHtml += '</div>';
-
-        // Renderizar cabecera con título editable
-        const headerHtml = `<input type="text" id="modal-topic-title-input" value="">
-                            <button id="modal-close-button-x" class="close-button">×</button>`;
-        
-        modalHeader.innerHTML = tabsHtml + headerHtml;
-        
-        // Cargar datos de la pestaña activa
-        loadActiveTabData();
-    }
-
-    function loadActiveTabData() {
-        if (!activeTabId) return;
-
-        const topic = topicsData.find(t => t.id == activeTabId);
-        const notes = getNotesFromStorage();
-        const noteData = notes[activeTabId];
-
-        const titleInput = document.getElementById('modal-topic-title-input');
-        titleInput.value = (noteData && noteData.title) ? noteData.title : `Notas para: (${topic.id}) ${topic.name}`;
-        quill.root.innerHTML = (noteData && noteData.content) ? noteData.content : '';
-        
-        unsavedChanges = false;
-        titleInput.addEventListener('input', () => { unsavedChanges = true; });
-    }
-
-    function switchToTab(topicId) {
-        // Guardar cambios pendientes de la pestaña anterior antes de cambiar
-        if (unsavedChanges) {
-            saveNote(activeTabId, false); // Guardar sin alerta
-        }
-        activeTabId = topicId;
-        renderModalContent();
-    }
-
-    function closeTab(topicId) {
-        // Guardar cambios pendientes antes de cerrar
-        if (unsavedChanges && activeTabId == topicId) {
-             if (confirm('Tienes cambios sin guardar en esta pestaña. ¿Guardarlos antes de cerrar?')) {
-                saveNote(activeTabId, false);
-            }
-        }
-
-        const index = openTabs.indexOf(topicId);
-        if (index > -1) {
-            openTabs.splice(index, 1);
-        }
-
-        if (openTabs.length === 0) {
-            closeModal();
-        } else {
-            if (activeTabId == topicId) {
-                // Si cerré la pestaña activa, activo la anterior o la primera
-                activeTabId = openTabs[Math.max(0, index - 1)];
-            }
-            renderModalContent();
-        }
-    }
-
-    function closeModal() {
-        if (unsavedChanges) {
-            if (!confirm('Tienes cambios sin guardar. ¿Estás seguro de que quieres cerrar?')) {
-                return;
-            }
-        }
-        modal.classList.add('hidden');
-        openTabs = [];
-        activeTabId = null;
-    }
-
-    function saveNote(topicIdToSave = activeTabId, showAlert = true) {
-        if (!topicIdToSave) return;
-        const title = document.getElementById('modal-topic-title-input').value;
-        const content = quill.root.innerHTML;
-        
-        saveNoteToStorage(topicIdToSave, { title, content });
-        unsavedChanges = false;
-        
-        if (showAlert) alert('¡Nota guardada!');
-        updateNoteButton(topicIdToSave, true);
-    }
-    
-    function deleteNote() {
-        if (!activeTabId) return;
-        if (confirm('¿Estás seguro de que quieres eliminar la nota de esta pestaña?')) {
-            deleteNoteFromStorage(activeTabId);
-            loadActiveTabData(); // Recargar la pestaña para que aparezca vacía
-            alert('Nota eliminada.');
-            updateNoteButton(activeTabId, false);
-        }
-    }
-
-    function printNote() {
-        window.print();
-    }
-
-    // --- FUNCIÓN PARA RENDERIZAR LOS TEMAS (ACTUALIZADA) ---
-    function renderTopics() {
-        // ... (código para agrupar por sección igual que antes) ...
-        // ...
-        // Dentro del bucle forEach de los temas, la línea de botón se actualiza:
-        // ...
-        // <button class="edit-note-btn ${hasNotes ? 'has-notes' : ''}">Ver/Editar</button>
-        // ...
-    }
-
-    function updateNoteButton(topicId, hasNotes) {
-        // ... (sin cambios)
-    }
-    
-    // --- MANEJO DE EVENTOS ---
-    // Evento para abrir el modal desde la lista principal
-    topicListContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('edit-note-btn')) {
-            const topicId = e.target.closest('tr').dataset.topicId;
-            openNoteInTab(topicId);
-        }
-        // ... (resto de la lógica de acordeón y confianza sin cambios) ...
-    });
-
-    // Eventos dentro del modal (usando delegación de eventos en el header)
-    modalHeader.addEventListener('click', (e) => {
-        const target = e.target;
-        if (target.id === 'modal-close-button-x') {
-            closeModal();
-        } else if (target.classList.contains('modal-tab')) {
-            switchToTab(target.dataset.id);
-        } else if (target.classList.contains('close-tab')) {
-            e.stopPropagation(); // Evita que se active el cambio de pestaña
-            closeTab(target.dataset.id);
-        }
-    });
-
-    // Eventos del footer del modal
-    document.getElementById('modal-close-button').addEventListener('click', closeModal);
-    document.getElementById('modal-save-button').addEventListener('click', () => saveNote());
-    document.getElementById('modal-save-close-button').addEventListener('click', () => {
-        saveNote();
-        closeModal();
-    });
-    document.getElementById('modal-delete-button').addEventListener('click', deleteNote);
-    document.getElementById('modal-pdf-button').addEventListener('click', printNote);
-
-
-    // ... (filtros y búsqueda sin cambios) ...
-
-    // --- INICIALIZACIÓN ---
-    initializeQuill();
-    renderTopics(); // Asegúrate de que esta función esté completa con el código de la fase anterior
-});
+}
