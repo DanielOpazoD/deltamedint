@@ -1,5 +1,15 @@
+
+¡Por supuesto! Aquí tienes el código completo y corregido para el archivo script.js.
+Este código incluye:
+La base de datos completa de los 84 temas (con el typo de la sección IX corregido).
+La lógica restaurada para los filtros de confianza.
+Todas las funcionalidades de la Fase 2 revisada: editor con pestañas, título editable, impresión, etc.
+La lógica para que las secciones empiecen colapsadas.
+Simplemente copia todo el bloque de código de abajo y pégalo en tu archivo script.js, reemplazando todo su contenido actual.
+Código Completo para script.js
+Generated javascript
 document.addEventListener('DOMContentLoaded', () => {
-    // La misma base de datos de 84 temas va aquí...
+    // --- BASE DE DATOS DE TEMAS (COMPLETA Y CORREGIDA) ---
     const topicsData = [
         { id: 1, section: "I.- TEMAS CARDIOVASCULARES", name: "Insuficiencia Cardíaca: Fisiopatología y tratamiento" },
         { id: 2, section: "I.- TEMAS CARDIOVASCULARES", name: "Edema Pulmonar Agudo cardiogénico" },
@@ -55,42 +65,41 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 52, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Diabetes Mellitus tipo II" },
         { id: 53, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Nefropatía diabética" },
         { id: 54, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Cetoacidosis diabética e hiperosmolaridad" },
-        { id: 55, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Dislipidemias: Diagnóstico diferencial y tratamiento" },
-        { id: 56, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipertiroidismo: Diagnóstico diferencial y tratamiento" },
-        { id: 57, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipotiroidismo: Diagnóstico diferencial y tratamiento" },
-        { id: 58, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipercalcemia: Diagnóstico diferencial y tratamiento" },
-        { id: 59, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Insuficiencia Suprarrenal Aguda: Diagnóstico y tratamiento" },
-        { id: 60, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Anemia ferropriva: Diagnóstico y tratamiento" },
-        { id: 61, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Anemia megaloblástica: Diagnóstico y tratamiento" },
-        { id: 62, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Linfomas no Hodgkin: Diagnóstico y tratamiento" },
-        { id: 63, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Mieloma Múltiple: Diagnóstico y tratamiento" },
-        { id: 64, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Púrpura trombocitopénico: Etiología, diagnóstico y tratamiento" },
-        { id: 65, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Demencia: Etiología" },
-        { id: 66, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Síncope: Diagnóstico diferencial" },
-        { id: 67, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Coma: Diagnóstico diferencial" },
-        { id: 68, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Accidente cerebro vascular: Diagnóstico diferencial y tratamiento" },
-        { id: 69, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Meningitis bacteriana: Diagnóstico y tratamiento" },
-        { id: 70, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Enfermedad de Parkinson" },
-        { id: 71, "section": "VIII.- REUMATOLOGÍA", name: "Osteoporosis: Diagnóstico y tratamiento" },
-        { id: 72, "section": "VIII.- REUMATOLOGÍA", name: "Lupus Eritematoso Sistémico: Diagnóstico y tratamiento" },
-        { id: 73, "section": "VIII.- REUMATOLOGÍA", name: "Artritis Reumatoidea: Diagnóstico y tratamiento" },
-        { id: 74, "section": "VIII.- REUMATOLOGÍA", name: "Gota: Diagnóstico y tratamiento" },
-        { id: 75, "section": "VIII.- REUMATOLOGÍA", name: "Vasculitis: Diagnóstico diferencial y tratamiento" },
-        { id: 76, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Herpes Zóster: Diagnóstico y tratamiento" },
-        { id: 77, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Mononucleosis Infecciosa: Diagnóstico y tratamiento" },
-        { id: 78, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "VIH/SIDA" },
-        { id: 79, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Uretritis: Diagnóstico diferencial y tratamiento" },
-        { id: 80, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Shock Séptico: Manejo" },
-        { id: 81, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones en pacientes inmunodeprimidos No VIH" },
-        { id: 82, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Micosis de la piel" },
-        { id: 83, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Amebiasis y Giardiasis" },
-        { id: 84, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones bacterianas de la piel y partes blandas: Diagnóstico y tratamiento" }
+        { id: 55, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Dislipidemias: Diagnóstico diferencial y tratamiento" },
+        { id: 56, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipertiroidismo: Diagnóstico diferencial y tratamiento" },
+        { id: 57, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipotiroidismo: Diagnóstico diferencial y tratamiento" },
+        { id: 58, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipercalcemia: Diagnóstico diferencial y tratamiento" },
+        { id: 59, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Insuficiencia Suprarrenal Aguda: Diagnóstico y tratamiento" },
+        { id: 60, section: "VI.- TEMAS HEMATOLÓGICOS", name: "Anemia ferropriva: Diagnóstico y tratamiento" },
+        { id: 61, section: "VI.- TEMAS HEMATOLÓGICOS", name: "Anemia megaloblástica: Diagnóstico y tratamiento" },
+        { id: 62, section: "VI.- TEMAS HEMATOLÓGICOS", name: "Linfomas no Hodgkin: Diagnóstico y tratamiento" },
+        { id: 63, section: "VI.- TEMAS HEMATOLÓGICOS", name: "Mieloma Múltiple: Diagnóstico y tratamiento" },
+        { id: 64, section: "VI.- TEMAS HEMATOLÓGICOS", name: "Púrpura trombocitopénico: Etiología, diagnóstico y tratamiento" },
+        { id: 65, section: "VII.- TEMAS NEUROLÓGICOS", name: "Demencia: Etiología" },
+        { id: 66, section: "VII.- TEMAS NEUROLÓGICOS", name: "Síncope: Diagnóstico diferencial" },
+        { id: 67, section: "VII.- TEMAS NEUROLÓGICOS", name: "Coma: Diagnóstico diferencial" },
+        { id: 68, section: "VII.- TEMAS NEUROLÓGICOS", name: "Accidente cerebro vascular: Diagnóstico diferencial y tratamiento" },
+        { id: 69, section: "VII.- TEMAS NEUROLÓGICOS", name: "Meningitis bacteriana: Diagnóstico y tratamiento" },
+        { id: 70, section: "VII.- TEMAS NEUROLÓGICOS", name: "Enfermedad de Parkinson" },
+        { id: 71, section: "VIII.- REUMATOLOGÍA", name: "Osteoporosis: Diagnóstico y tratamiento" },
+        { id: 72, section: "VIII.- REUMATOLOGÍA", name: "Lupus Eritematoso Sistémico: Diagnóstico y tratamiento" },
+        { id: 73, section: "VIII.- REUMATOLOGÍA", name: "Artritis Reumatoidea: Diagnóstico y tratamiento" },
+        { id: 74, section: "VIII.- REUMATOLOGÍA", name: "Gota: Diagnóstico y tratamiento" },
+        { id: 75, section: "VIII.- REUMATOLOGÍA", name: "Vasculitis: Diagnóstico diferencial y tratamiento" },
+        { id: 76, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Herpes Zóster: Diagnóstico y tratamiento" },
+        { id: 77, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Mononucleosis Infecciosa: Diagnóstico y tratamiento" },
+        { id: 78, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "VIH/SIDA" },
+        { id: 79, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Uretritis: Diagnóstico diferencial y tratamiento" },
+        { id: 80, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Shock Séptico: Manejo" },
+        { id: 81, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones en pacientes inmunodepremidos No VIH" },
+        { id: 82, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Micosis de la piel" },
+        { id: 83, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Amebiasis y Giardiasis" },
+        { id: 84, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones bacterianas de la piel y partes blandas: Diagnóstico y tratamiento" }
     ];
 
-    // ... (resto del código JS) ...
     // --- ESTADO DE LA APLICACIÓN ---
     let quill;
-    let openTabs = []; // Array de IDs de temas abiertos
+    let openTabs = [];
     let activeTabId = null;
     let unsavedChanges = false;
     
@@ -101,7 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('notes-modal');
     const modalHeader = document.querySelector('.modal-header');
 
-    // --- CONFIGURACIÓN DE QUILL.JS ---
+    // --- LÓGICA DE LA APLICACIÓN ---
+    
     function initializeQuill() {
         if (quill) return;
         const toolbarOptions = [
@@ -112,17 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ['link', 'image'],
             ['clean']
         ];
-        quill = new Quill('#editor-container', {
-            modules: { toolbar: toolbarOptions },
-            theme: 'snow'
-        });
+        quill = new Quill('#editor-container', { modules: { toolbar: toolbarOptions }, theme: 'snow' });
         quill.on('text-change', () => { unsavedChanges = true; });
     }
 
-    // --- GESTIÓN DE DATOS (LOCALSTORAGE) ---
-    function getNotesFromStorage() {
-        return JSON.parse(localStorage.getItem('medNotes') || '{}');
-    }
+    function getNotesFromStorage() { return JSON.parse(localStorage.getItem('medNotes') || '{}'); }
 
     function saveNoteToStorage(topicId, noteData) {
         const notes = getNotesFromStorage();
@@ -135,81 +139,60 @@ document.addEventListener('DOMContentLoaded', () => {
         delete notes[topicId];
         localStorage.setItem('medNotes', JSON.stringify(notes));
     }
-
-    // --- LÓGICA DEL MODAL Y PESTAÑAS ---
+    
     function openNoteInTab(topicId) {
-        if (!openTabs.includes(topicId)) {
-            openTabs.push(topicId);
+        if (!openTabs.includes(String(topicId))) { // Convertir a string para consistencia
+            openTabs.push(String(topicId));
         }
-        activeTabId = topicId;
+        activeTabId = String(topicId);
         renderModalContent();
         modal.classList.remove('hidden');
     }
 
     function renderModalContent() {
-        // Renderizar pestañas
         let tabsHtml = '<div class="modal-tabs-container">';
         openTabs.forEach(id => {
             const topic = topicsData.find(t => t.id == id);
-            tabsHtml += `<div class="modal-tab ${id == activeTabId ? 'active' : ''}" data-id="${id}">
-                            ${topic.id}. ${topic.name}
-                            <span class="close-tab" data-id="${id}">×</span>
-                         </div>`;
+            tabsHtml += `<div class="modal-tab ${id == activeTabId ? 'active' : ''}" data-id="${id}">${topic.id}. ${topic.name}<span class="close-tab" data-id="${id}">×</span></div>`;
         });
         tabsHtml += '</div>';
 
-        // Renderizar cabecera con título editable
-        const headerHtml = `<input type="text" id="modal-topic-title-input" value="">
-                            <button id="modal-close-button-x" class="close-button">×</button>`;
-        
+        const headerHtml = `<input type="text" id="modal-topic-title-input" value=""><button id="modal-close-button-x" class="close-button">×</button>`;
         modalHeader.innerHTML = tabsHtml + headerHtml;
-        
-        // Cargar datos de la pestaña activa
         loadActiveTabData();
     }
 
     function loadActiveTabData() {
         if (!activeTabId) return;
-
         const topic = topicsData.find(t => t.id == activeTabId);
         const notes = getNotesFromStorage();
         const noteData = notes[activeTabId];
-
         const titleInput = document.getElementById('modal-topic-title-input');
-        titleInput.value = (noteData && noteData.title) ? noteData.title : `Notas para: (${topic.id}) ${topic.name}`;
+        titleInput.value = (noteData && noteData.title) ? noteData.title : `Notas: (${topic.id}) ${topic.name}`;
         quill.root.innerHTML = (noteData && noteData.content) ? noteData.content : '';
-        
         unsavedChanges = false;
         titleInput.addEventListener('input', () => { unsavedChanges = true; });
     }
 
     function switchToTab(topicId) {
-        // Guardar cambios pendientes de la pestaña anterior antes de cambiar
-        if (unsavedChanges) {
-            saveNote(activeTabId, false); // Guardar sin alerta
-        }
-        activeTabId = topicId;
+        if (unsavedChanges) saveNote(activeTabId, false);
+        activeTabId = String(topicId);
         renderModalContent();
     }
 
     function closeTab(topicId) {
-        // Guardar cambios pendientes antes de cerrar
+        topicId = String(topicId);
         if (unsavedChanges && activeTabId == topicId) {
-             if (confirm('Tienes cambios sin guardar en esta pestaña. ¿Guardarlos antes de cerrar?')) {
+             if (confirm('Tienes cambios sin guardar. ¿Guardarlos antes de cerrar?')) {
                 saveNote(activeTabId, false);
             }
         }
-
         const index = openTabs.indexOf(topicId);
-        if (index > -1) {
-            openTabs.splice(index, 1);
-        }
-
+        if (index > -1) openTabs.splice(index, 1);
         if (openTabs.length === 0) {
             closeModal();
         } else {
             if (activeTabId == topicId) {
-                // Si cerré la pestaña activa, activo la anterior o la primera
                 activeTabId = openTabs[Math.max(0, index - 1)];
             }
             renderModalContent();
@@ -218,9 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeModal() {
         if (unsavedChanges) {
-            if (!confirm('Tienes cambios sin guardar. ¿Estás seguro de que quieres cerrar?')) {
-                return;
-            }
+            if (!confirm('Tienes cambios sin guardar. ¿Seguro que quieres cerrar?')) return;
         }
         modal.classList.add('hidden');
         openTabs = [];
@@ -231,79 +212,120 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!topicIdToSave) return;
         const title = document.getElementById('modal-topic-title-input').value;
         const content = quill.root.innerHTML;
-        
         saveNoteToStorage(topicIdToSave, { title, content });
         unsavedChanges = false;
-        
         if (showAlert) alert('¡Nota guardada!');
         updateNoteButton(topicIdToSave, true);
     }
     
     function deleteNote() {
         if (!activeTabId) return;
-        if (confirm('¿Estás seguro de que quieres eliminar la nota de esta pestaña?')) {
+        if (confirm('¿Seguro que quieres eliminar la nota de esta pestaña?')) {
             deleteNoteFromStorage(activeTabId);
-            loadActiveTabData(); // Recargar la pestaña para que aparezca vacía
+            loadActiveTabData();
             alert('Nota eliminada.');
             updateNoteButton(activeTabId, false);
         }
     }
 
-    function printNote() {
-        window.print();
-    }
+    function printNote() { window.print(); }
 
-    // --- FUNCIÓN PARA RENDERIZAR LOS TEMAS (ACTUALIZADA) ---
     function renderTopics() {
-        // ... (código para agrupar por sección igual que antes) ...
-        // ...
-        // Dentro del bucle forEach de los temas, la línea de botón se actualiza:
-        // ...
-        // <button class="edit-note-btn ${hasNotes ? 'has-notes' : ''}">Ver/Editar</button>
-        // ...
+        const topicsBySection = topicsData.reduce((acc, topic) => {
+            if (!acc[topic.section]) acc[topic.section] = [];
+            acc[topic.section].push(topic);
+            return acc;
+        }, {});
+
+        const notes = getNotesFromStorage();
+        let html = '';
+        for (const section in topicsBySection) {
+            html += `<section class="topic-section">
+                        <header class="section-header collapsed">${section}</header>
+                        <table class="topic-table hidden">
+                            <thead>
+                                <tr><th>N°</th><th>Tema</th><th>Confianza</th><th>Recursos</th><th>Notas</th></tr>
+                            </thead>
+                            <tbody>`;
+            topicsBySection[section].forEach(topic => {
+                const hasNotes = !!(notes[topic.id] && notes[topic.id].content && notes[topic.id].content.trim() !== '<p><br></p>');
+                html += `<tr data-topic-id="${topic.id}">
+                            <td>${topic.id}</td>
+                            <td class="topic-name">${topic.name}</td>
+                            <td><span class="confidence-marker neutral" data-state="neutral"></span></td>
+                            <td><span>📘</span><span>🎥</span><span>📄</span></td>
+                            <td><button class="edit-note-btn ${hasNotes ? 'has-notes' : ''}">Ver/Editar</button></td>
+                        </tr>`;
+            });
+            html += `</tbody></table></section>`;
+        }
+        topicListContainer.innerHTML = html;
     }
 
     function updateNoteButton(topicId, hasNotes) {
-        // ... (sin cambios)
+        const button = document.querySelector(`tr[data-topic-id="${topicId}"] .edit-note-btn`);
+        if (button) button.classList.toggle('has-notes', hasNotes);
     }
     
     // --- MANEJO DE EVENTOS ---
-    // Evento para abrir el modal desde la lista principal
     topicListContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('edit-note-btn')) {
+        if (e.target.classList.contains('section-header')) {
+            e.target.classList.toggle('collapsed');
+            e.target.nextElementSibling.classList.toggle('hidden');
+        } else if (e.target.classList.contains('confidence-marker')) {
+            const marker = e.target;
+            const states = ['neutral', 'red', 'yellow', 'green'];
+            const nextState = states[(states.indexOf(marker.dataset.state) + 1) % states.length];
+            marker.className = `confidence-marker ${nextState}`;
+            marker.dataset.state = nextState;
+        } else if (e.target.classList.contains('edit-note-btn')) {
             const topicId = e.target.closest('tr').dataset.topicId;
             openNoteInTab(topicId);
         }
-        // ... (resto de la lógica de acordeón y confianza sin cambios) ...
     });
 
-    // Eventos dentro del modal (usando delegación de eventos en el header)
     modalHeader.addEventListener('click', (e) => {
-        const target = e.target;
-        if (target.id === 'modal-close-button-x') {
-            closeModal();
-        } else if (target.classList.contains('modal-tab')) {
-            switchToTab(target.dataset.id);
-        } else if (target.classList.contains('close-tab')) {
-            e.stopPropagation(); // Evita que se active el cambio de pestaña
-            closeTab(target.dataset.id);
+        if (e.target.id === 'modal-close-button-x') closeModal();
+        else if (e.target.classList.contains('modal-tab')) switchToTab(e.target.dataset.id);
+        else if (e.target.classList.contains('close-tab')) {
+            e.stopPropagation();
+            closeTab(e.target.dataset.id);
+        }
+    });
+    
+    document.getElementById('modal-close-button').addEventListener('click', closeModal);
+    document.getElementById('modal-save-button').addEventListener('click', () => saveNote());
+    document.getElementById('modal-save-close-button').addEventListener('click', () => { saveNote(activeTabId, false); closeModal(); });
+    document.getElementById('modal-delete-button').addEventListener('click', deleteNote);
+    document.getElementById('modal-print-button').addEventListener('click', printNote);
+
+
+    searchBar.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        document.querySelectorAll('.topic-table tbody tr').forEach(row => {
+            const topicName = row.querySelector('.topic-name').textContent.toLowerCase();
+            const topicId = row.dataset.topicId;
+            row.style.display = topicName.includes(searchTerm) || topicId.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+    confidenceFilters.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            confidenceFilters.querySelector('.active').classList.remove('active');
+            e.target.classList.add('active');
+            const filter = e.target.dataset.filter;
+            document.querySelectorAll('.topic-table tbody tr').forEach(row => {
+                const markerState = row.querySelector('.confidence-marker').dataset.state;
+                if (filter === 'all' || markerState === filter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         }
     });
 
-    // Eventos del footer del modal
-    document.getElementById('modal-close-button').addEventListener('click', closeModal);
-    document.getElementById('modal-save-button').addEventListener('click', () => saveNote());
-    document.getElementById('modal-save-close-button').addEventListener('click', () => {
-        saveNote();
-        closeModal();
-    });
-    document.getElementById('modal-delete-button').addEventListener('click', deleteNote);
-    document.getElementById('modal-pdf-button').addEventListener('click', printNote);
-
-
-    // ... (filtros y búsqueda sin cambios) ...
-
     // --- INICIALIZACIÓN ---
     initializeQuill();
-    renderTopics(); // Asegúrate de que esta función esté completa con el código de la fase anterior
+    renderTopics();
 });
