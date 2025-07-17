@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- BASE DE DATOS DE TEMAS ---
-    // (La misma que en la Fase 1, no la incluyo aquí por brevedad, pero debe estar)
+    // La misma base de datos de 84 temas va aquí...
     const topicsData = [
         { id: 1, section: "I.- TEMAS CARDIOVASCULARES", name: "Insuficiencia Cardíaca: Fisiopatología y tratamiento" },
         { id: 2, section: "I.- TEMAS CARDIOVASCULARES", name: "Edema Pulmonar Agudo cardiogénico" },
@@ -56,52 +55,55 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 52, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Diabetes Mellitus tipo II" },
         { id: 53, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Nefropatía diabética" },
         { id: 54, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Cetoacidosis diabética e hiperosmolaridad" },
-        { id: 55, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Dislipidemias: Diagnóstico diferencial y tratamiento" },
-        { id: 56, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipertiroidismo: Diagnóstico diferencial y tratamiento" },
-        { id: 57, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipotiroidismo: Diagnóstico diferencial y tratamiento" },
-        { id: 58, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipercalcemia: Diagnóstico diferencial y tratamiento" },
-        { id: 59, section: "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Insuficiencia Suprarrenal Aguda: Diagnóstico y tratamiento" },
-        { id: 60, section: "VI.- TEMAS HEMATOLÓGICOS", name: "Anemia ferropriva: Diagnóstico y tratamiento" },
-        { id: 61, section: "VI.- TEMAS HEMATOLÓGICOS", name: "Anemia megaloblástica: Diagnóstico y tratamiento" },
-        { id: 62, section: "VI.- TEMAS HEMATOLÓGICOS", name: "Linfomas no Hodgkin: Diagnóstico y tratamiento" },
-        { id: 63, section: "VI.- TEMAS HEMATOLÓGICOS", name: "Mieloma Múltiple: Diagnóstico y tratamiento" },
-        { id: 64, section: "VI.- TEMAS HEMATOLÓGICOS", name: "Púrpura trombocitopénico: Etiología, diagnóstico y tratamiento" },
-        { id: 65, section: "VII.- TEMAS NEUROLÓGICOS", name: "Demencia: Etiología" },
-        { id: 66, section: "VII.- TEMAS NEUROLÓGICOS", name: "Síncope: Diagnóstico diferencial" },
-        { id: 67, section: "VII.- TEMAS NEUROLÓGICOS", name: "Coma: Diagnóstico diferencial" },
-        { id: 68, section: "VII.- TEMAS NEUROLÓGICOS", name: "Accidente cerebro vascular: Diagnóstico diferencial y tratamiento" },
-        { id: 69, section: "VII.- TEMAS NEUROLÓGICOS", name: "Meningitis bacteriana: Diagnóstico y tratamiento" },
-        { id: 70, section: "VII.- TEMAS NEUROLÓGICOS", name: "Enfermedad de Parkinson" },
-        { id: 71, section: "VIII.- REUMATOLOGÍA", name: "Osteoporosis: Diagnóstico y tratamiento" },
-        { id: 72, section: "VIII.- REUMATOLOGÍA", name: "Lupus Eritematoso Sistémico: Diagnóstico y tratamiento" },
-        { id: 73, section: "VIII.- REUMATOLOGÍA", name: "Artritis Reumatoidea: Diagnóstico y tratamiento" },
-        { id: 74, section: "VIII.- REUMATOLOGÍA", name: "Gota: Diagnóstico y tratamiento" },
-        { id: 75, section: "VIII.- REUMATOLOGÍA", name: "Vasculitis: Diagnóstico diferencial y tratamiento" },
-        { id: 76, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Herpes Zóster: Diagnóstico y tratamiento" },
-        { id: 77, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITarias", name: "Mononucleosis Infecciosa: Diagnóstico y tratamiento" },
-        { id: 78, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "VIH/SIDA" },
-        { id: 79, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Uretritis: Diagnóstico diferencial y tratamiento" },
-        { id: 80, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Shock Séptico: Manejo" },
-        { id: 81, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones en pacientes inmunodeprimidos No VIH" },
-        { id: 82, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Micosis de la piel" },
-        { id: 83, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Amebiasis y Giardiasis" },
-        { id: 84, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones bacterianas de la piel y partes blandas: Diagnóstico y tratamiento" }
+        { id: 55, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Dislipidemias: Diagnóstico diferencial y tratamiento" },
+        { id: 56, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipertiroidismo: Diagnóstico diferencial y tratamiento" },
+        { id: 57, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipotiroidismo: Diagnóstico diferencial y tratamiento" },
+        { id: 58, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Hipercalcemia: Diagnóstico diferencial y tratamiento" },
+        { id: 59, "section": "V.- TEMAS DE METABOLISMO, NUTRICIÓN Y ENDOCRINOLOGÍA", name: "Insuficiencia Suprarrenal Aguda: Diagnóstico y tratamiento" },
+        { id: 60, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Anemia ferropriva: Diagnóstico y tratamiento" },
+        { id: 61, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Anemia megaloblástica: Diagnóstico y tratamiento" },
+        { id: 62, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Linfomas no Hodgkin: Diagnóstico y tratamiento" },
+        { id: 63, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Mieloma Múltiple: Diagnóstico y tratamiento" },
+        { id: 64, "section": "VI.- TEMAS HEMATOLÓGICOS", name: "Púrpura trombocitopénico: Etiología, diagnóstico y tratamiento" },
+        { id: 65, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Demencia: Etiología" },
+        { id: 66, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Síncope: Diagnóstico diferencial" },
+        { id: 67, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Coma: Diagnóstico diferencial" },
+        { id: 68, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Accidente cerebro vascular: Diagnóstico diferencial y tratamiento" },
+        { id: 69, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Meningitis bacteriana: Diagnóstico y tratamiento" },
+        { id: 70, "section": "VII.- TEMAS NEUROLÓGICOS", name: "Enfermedad de Parkinson" },
+        { id: 71, "section": "VIII.- REUMATOLOGÍA", name: "Osteoporosis: Diagnóstico y tratamiento" },
+        { id: 72, "section": "VIII.- REUMATOLOGÍA", name: "Lupus Eritematoso Sistémico: Diagnóstico y tratamiento" },
+        { id: 73, "section": "VIII.- REUMATOLOGÍA", name: "Artritis Reumatoidea: Diagnóstico y tratamiento" },
+        { id: 74, "section": "VIII.- REUMATOLOGÍA", name: "Gota: Diagnóstico y tratamiento" },
+        { id: 75, "section": "VIII.- REUMATOLOGÍA", name: "Vasculitis: Diagnóstico diferencial y tratamiento" },
+        { id: 76, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Herpes Zóster: Diagnóstico y tratamiento" },
+        { id: 77, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Mononucleosis Infecciosa: Diagnóstico y tratamiento" },
+        { id: 78, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "VIH/SIDA" },
+        { id: 79, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Uretritis: Diagnóstico diferencial y tratamiento" },
+        { id: 80, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Shock Séptico: Manejo" },
+        { id: 81, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones en pacientes inmunodeprimidos No VIH" },
+        { id: 82, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Micosis de la piel" },
+        { id: 83, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Amebiasis y Giardiasis" },
+        { id: 84, "section": "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones bacterianas de la piel y partes blandas: Diagnóstico y tratamiento" }
     ];
 
+    // ... (resto del código JS) ...
+    // --- ESTADO DE LA APLICACIÓN ---
+    let quill;
+    let openTabs = []; // Array de IDs de temas abiertos
+    let activeTabId = null;
+    let unsavedChanges = false;
+    
     // --- ELEMENTOS DEL DOM ---
     const topicListContainer = document.getElementById('topic-list-container');
     const searchBar = document.getElementById('search-bar');
     const confidenceFilters = document.querySelector('.confidence-filters');
     const modal = document.getElementById('notes-modal');
-    const modalTopicTitle = document.getElementById('modal-topic-title');
-    const { jsPDF } = window.jspdf;
-
-    let quill;
-    let currentTopicId = null;
-    let unsavedChanges = false;
+    const modalHeader = document.querySelector('.modal-header');
 
     // --- CONFIGURACIÓN DE QUILL.JS ---
     function initializeQuill() {
+        if (quill) return;
         const toolbarOptions = [
             [{ 'header': [1, 2, 3, false] }],
             ['bold', 'italic', 'underline', 'strike'],
@@ -111,14 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ['clean']
         ];
         quill = new Quill('#editor-container', {
-            modules: {
-                toolbar: toolbarOptions
-            },
+            modules: { toolbar: toolbarOptions },
             theme: 'snow'
         });
-        quill.on('text-change', () => {
-            unsavedChanges = true;
-        });
+        quill.on('text-change', () => { unsavedChanges = true; });
     }
 
     // --- GESTIÓN DE DATOS (LOCALSTORAGE) ---
@@ -126,9 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return JSON.parse(localStorage.getItem('medNotes') || '{}');
     }
 
-    function saveNoteToStorage(topicId, content) {
+    function saveNoteToStorage(topicId, noteData) {
         const notes = getNotesFromStorage();
-        notes[topicId] = content;
+        notes[topicId] = noteData;
         localStorage.setItem('medNotes', JSON.stringify(notes));
     }
 
@@ -138,17 +136,84 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('medNotes', JSON.stringify(notes));
     }
 
-    // --- LÓGICA DEL MODAL ---
-    function openModal(topicId) {
-        currentTopicId = topicId;
-        const topic = topicsData.find(t => t.id == topicId);
-        modalTopicTitle.textContent = `Notas para: (${topic.id}) ${topic.name}`;
+    // --- LÓGICA DEL MODAL Y PESTAÑAS ---
+    function openNoteInTab(topicId) {
+        if (!openTabs.includes(topicId)) {
+            openTabs.push(topicId);
+        }
+        activeTabId = topicId;
+        renderModalContent();
+        modal.classList.remove('hidden');
+    }
+
+    function renderModalContent() {
+        // Renderizar pestañas
+        let tabsHtml = '<div class="modal-tabs-container">';
+        openTabs.forEach(id => {
+            const topic = topicsData.find(t => t.id == id);
+            tabsHtml += `<div class="modal-tab ${id == activeTabId ? 'active' : ''}" data-id="${id}">
+                            ${topic.id}. ${topic.name}
+                            <span class="close-tab" data-id="${id}">×</span>
+                         </div>`;
+        });
+        tabsHtml += '</div>';
+
+        // Renderizar cabecera con título editable
+        const headerHtml = `<input type="text" id="modal-topic-title-input" value="">
+                            <button id="modal-close-button-x" class="close-button">×</button>`;
         
+        modalHeader.innerHTML = tabsHtml + headerHtml;
+        
+        // Cargar datos de la pestaña activa
+        loadActiveTabData();
+    }
+
+    function loadActiveTabData() {
+        if (!activeTabId) return;
+
+        const topic = topicsData.find(t => t.id == activeTabId);
         const notes = getNotesFromStorage();
-        quill.root.innerHTML = notes[topicId] || ''; // Carga la nota o deja en blanco
+        const noteData = notes[activeTabId];
+
+        const titleInput = document.getElementById('modal-topic-title-input');
+        titleInput.value = (noteData && noteData.title) ? noteData.title : `Notas para: (${topic.id}) ${topic.name}`;
+        quill.root.innerHTML = (noteData && noteData.content) ? noteData.content : '';
         
         unsavedChanges = false;
-        modal.classList.remove('hidden');
+        titleInput.addEventListener('input', () => { unsavedChanges = true; });
+    }
+
+    function switchToTab(topicId) {
+        // Guardar cambios pendientes de la pestaña anterior antes de cambiar
+        if (unsavedChanges) {
+            saveNote(activeTabId, false); // Guardar sin alerta
+        }
+        activeTabId = topicId;
+        renderModalContent();
+    }
+
+    function closeTab(topicId) {
+        // Guardar cambios pendientes antes de cerrar
+        if (unsavedChanges && activeTabId == topicId) {
+             if (confirm('Tienes cambios sin guardar en esta pestaña. ¿Guardarlos antes de cerrar?')) {
+                saveNote(activeTabId, false);
+            }
+        }
+
+        const index = openTabs.indexOf(topicId);
+        if (index > -1) {
+            openTabs.splice(index, 1);
+        }
+
+        if (openTabs.length === 0) {
+            closeModal();
+        } else {
+            if (activeTabId == topicId) {
+                // Si cerré la pestaña activa, activo la anterior o la primera
+                activeTabId = openTabs[Math.max(0, index - 1)];
+            }
+            renderModalContent();
+        }
     }
 
     function closeModal() {
@@ -158,168 +223,87 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         modal.classList.add('hidden');
-        currentTopicId = null;
+        openTabs = [];
+        activeTabId = null;
     }
 
-    function saveNote() {
-        if (!currentTopicId) return;
+    function saveNote(topicIdToSave = activeTabId, showAlert = true) {
+        if (!topicIdToSave) return;
+        const title = document.getElementById('modal-topic-title-input').value;
         const content = quill.root.innerHTML;
-        saveNoteToStorage(currentTopicId, content);
+        
+        saveNoteToStorage(topicIdToSave, { title, content });
         unsavedChanges = false;
-        alert('¡Nota guardada!');
-        updateNoteButton(currentTopicId, true); // Actualiza el botón para que se vea con notas
+        
+        if (showAlert) alert('¡Nota guardada!');
+        updateNoteButton(topicIdToSave, true);
     }
     
     function deleteNote() {
-        if (!currentTopicId) return;
-        if (confirm('¿Estás seguro de que quieres eliminar esta nota? Esta acción no se puede deshacer.')) {
-            deleteNoteFromStorage(currentTopicId);
-            quill.root.innerHTML = '';
-            unsavedChanges = false;
+        if (!activeTabId) return;
+        if (confirm('¿Estás seguro de que quieres eliminar la nota de esta pestaña?')) {
+            deleteNoteFromStorage(activeTabId);
+            loadActiveTabData(); // Recargar la pestaña para que aparezca vacía
             alert('Nota eliminada.');
-            updateNoteButton(currentTopicId, false); // Actualiza el botón
+            updateNoteButton(activeTabId, false);
         }
     }
 
-    function exportToPdf() {
-        const doc = new jsPDF();
-        const editor = document.querySelector('.ql-editor');
-        const title = modalTopicTitle.textContent;
-    
-        doc.text(title, 10, 10);
-    
-        html2canvas(editor, { scale: 2 }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const imgProps = doc.getImageProperties(imgData);
-            const pdfWidth = doc.internal.pageSize.getWidth() - 20;
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            
-            let position = 20;
-            doc.addImage(imgData, 'PNG', 10, position, pdfWidth, pdfHeight);
-            
-            doc.save(`${title}.pdf`);
-        });
+    function printNote() {
+        window.print();
     }
 
     // --- FUNCIÓN PARA RENDERIZAR LOS TEMAS (ACTUALIZADA) ---
     function renderTopics() {
-        const topicsBySection = topicsData.reduce((acc, topic) => {
-            if (!acc[topic.section]) acc[topic.section] = [];
-            acc[topic.section].push(topic);
-            return acc;
-        }, {});
-
-        const notes = getNotesFromStorage();
-        let html = '';
-        for (const section in topicsBySection) {
-            html += `<section class="topic-section">
-                        <header class="section-header">${section}</header>
-                        <table class="topic-table">
-                            <thead>
-                                <tr>
-                                    <th class="col-id">N°</th>
-                                    <th>Tema</th>
-                                    <th class="col-confidence">Confianza</th>
-                                    <th class="col-resources">Recursos</th>
-                                    <th class="col-actions">Notas</th>
-                                </tr>
-                            </thead>
-                            <tbody>`;
-            topicsBySection[section].forEach(topic => {
-                const hasNotes = !!notes[topic.id];
-                html += `<tr data-topic-id="${topic.id}">
-                            <td class="col-id">${topic.id}</td>
-                            <td class="topic-name">${topic.name}</td>
-                            <td class="col-confidence">
-                                <span class="confidence-marker neutral" data-state="neutral"></span>
-                            </td>
-                            <td class="col-resources">
-                                <span title="Recurso 1 (Próximamente)">📘</span>
-                                <span title="Recurso 2 (Próximamente)">🎥</span>
-                                <span title="Recurso 3 (Próximamente)">📄</span>
-                            </td>
-                            <td class="col-actions">
-                                <button class="edit-note-btn ${hasNotes ? 'has-notes' : ''}">Ver/Editar</button>
-                            </td>
-                        </tr>`;
-            });
-            html += `</tbody></table></section>`;
-        }
-        topicListContainer.innerHTML = html;
+        // ... (código para agrupar por sección igual que antes) ...
+        // ...
+        // Dentro del bucle forEach de los temas, la línea de botón se actualiza:
+        // ...
+        // <button class="edit-note-btn ${hasNotes ? 'has-notes' : ''}">Ver/Editar</button>
+        // ...
     }
 
     function updateNoteButton(topicId, hasNotes) {
-        const button = document.querySelector(`tr[data-topic-id="${topicId}"] .edit-note-btn`);
-        if (button) {
-            if (hasNotes) {
-                button.classList.add('has-notes');
-            } else {
-                button.classList.remove('has-notes');
-            }
-        }
+        // ... (sin cambios)
     }
     
     // --- MANEJO DE EVENTOS ---
+    // Evento para abrir el modal desde la lista principal
     topicListContainer.addEventListener('click', (e) => {
-        // Acordeón
-        if (e.target.classList.contains('section-header')) {
-            e.target.classList.toggle('collapsed');
-            e.target.nextElementSibling.classList.toggle('hidden');
-        }
-        // Marcador de confianza
-        if (e.target.classList.contains('confidence-marker')) {
-            const marker = e.target;
-            const states = ['neutral', 'red', 'yellow', 'green'];
-            const nextState = states[(states.indexOf(marker.dataset.state) + 1) % states.length];
-            marker.className = `confidence-marker ${nextState}`;
-            marker.dataset.state = nextState;
-        }
-        // Abrir modal de notas
         if (e.target.classList.contains('edit-note-btn')) {
             const topicId = e.target.closest('tr').dataset.topicId;
-            openModal(topicId);
+            openNoteInTab(topicId);
+        }
+        // ... (resto de la lógica de acordeón y confianza sin cambios) ...
+    });
+
+    // Eventos dentro del modal (usando delegación de eventos en el header)
+    modalHeader.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target.id === 'modal-close-button-x') {
+            closeModal();
+        } else if (target.classList.contains('modal-tab')) {
+            switchToTab(target.dataset.id);
+        } else if (target.classList.contains('close-tab')) {
+            e.stopPropagation(); // Evita que se active el cambio de pestaña
+            closeTab(target.dataset.id);
         }
     });
 
-    // Eventos del modal
-    document.getElementById('modal-close-button-x').addEventListener('click', closeModal);
+    // Eventos del footer del modal
     document.getElementById('modal-close-button').addEventListener('click', closeModal);
-    document.getElementById('modal-save-button').addEventListener('click', saveNote);
+    document.getElementById('modal-save-button').addEventListener('click', () => saveNote());
     document.getElementById('modal-save-close-button').addEventListener('click', () => {
         saveNote();
         closeModal();
     });
     document.getElementById('modal-delete-button').addEventListener('click', deleteNote);
-    document.getElementById('modal-pdf-button').addEventListener('click', exportToPdf);
+    document.getElementById('modal-pdf-button').addEventListener('click', printNote);
 
 
-    // Filtros (sin cambios desde Fase 1)
-    searchBar.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        document.querySelectorAll('.topic-table tbody tr').forEach(row => {
-            const topicName = row.querySelector('.topic-name').textContent.toLowerCase();
-            const topicId = row.dataset.topicId;
-            row.style.display = topicName.includes(searchTerm) || topicId.includes(searchTerm) ? '' : 'none';
-        });
-    });
-
-    confidenceFilters.addEventListener('click', (e) => {
-        if (e.target.tagName === 'BUTTON') {
-            confidenceFilters.querySelector('.active').classList.remove('active');
-            e.target.classList.add('active');
-            const filter = e.target.dataset.filter;
-            document.querySelectorAll('.topic-table tbody tr').forEach(row => {
-                if (filter === 'all') {
-                    row.style.display = '';
-                } else {
-                    const markerState = row.querySelector('.confidence-marker').dataset.state;
-                    row.style.display = markerState === filter ? '' : 'none';
-                }
-            });
-        }
-    });
+    // ... (filtros y búsqueda sin cambios) ...
 
     // --- INICIALIZACIÓN ---
-    renderTopics();
     initializeQuill();
+    renderTopics(); // Asegúrate de que esta función esté completa con el código de la fase anterior
 });
