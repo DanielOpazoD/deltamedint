@@ -5,53 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guía de Estudio: Medicina Interna</title>
     
-    <!-- Librería de Quill.js -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
     
-    <!-- Librerías para PDF y Quill.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js" defer></script>
-
     <script src="script.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>💻 Guía de Estudio: Medicina Interna</h1>
-        <div class="global-actions">
-            <button disabled>✨ Asistente IA</button>
-            <button disabled>⬆️ Importar Todo</button>
-            <button disabled>⬇️ Exportar Todo</button>
-        </div>
-    </header>
 
-    <main>
-        <div class="filters-container">
-            <input type="search" id="search-bar" placeholder="🔍 Buscar tema por nombre o número...">
-            <div class="confidence-filters">
-                <span>Filtrar por confianza:</span>
-                <button data-filter="neutral">⚪ No clasificado</button>
-                <button data-filter="all" class="active">Todos</button>
-                <button data-filter="green">🟢 Dominado</button>
-                <button data-filter="yellow">🟡 En Progreso</button>
-                <button data-filter="red">🔴 Por Empezar</button>
+    <div class="main-container"> <!-- Contenedor principal para controlar el ancho -->
+        <header>
+            <h1>💻 Guía de Estudio: Medicina Interna</h1>
+            <div class="global-actions">
+                <button disabled>✨ Asistente IA</button>
+                <button disabled>⬆️ Importar Todo</button>
+                <button disabled>⬇️ Exportar Todo</button>
             </div>
-        </div>
+        </header>
 
-        <div id="topic-list-container">
-            <!-- El contenido de los temas se generará aquí con JavaScript -->
-        </div>
-    </main>
+        <main>
+            <div class="filters-container">
+                <input type="search" id="search-bar" placeholder="🔍 Buscar tema por nombre o número...">
+                <div class="confidence-filters">
+                    <span>Filtrar por confianza:</span>
+                    <button data-filter="neutral">⚪ No clasificado</button>
+                    <button data-filter="all" class="active">Todos</button>
+                    <button data-filter="green">🟢 Dominado</button>
+                    <button data-filter="yellow">🟡 En Progreso</button>
+                    <button data-filter="red">🔴 Por Empezar</button>
+                </div>
+            </div>
 
-    <!-- ======== ESTRUCTURA DEL MODAL DE NOTAS (NUEVO) ======== -->
+            <div id="topic-list-container">
+                <!-- El contenido de los temas se generará aquí con JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <!-- ======== ESTRUCTURA DEL MODAL DE NOTAS ======== -->
     <div id="notes-modal" class="hidden">
         <div class="modal-overlay"></div>
         <div class="modal-content">
             <header class="modal-header">
-                <h2 id="modal-topic-title">Notas del Tema</h2>
-                <button id="modal-close-button-x" class="close-button">×</button>
+                <!-- Contenido del header (pestañas y título) se genera con JS -->
             </header>
             <div class="modal-body">
                 <div id="toolbar-container">
@@ -65,7 +61,7 @@
                     <button id="modal-close-button">Cerrar</button>
                     <button id="modal-save-button">Guardar</button>
                     <button id="modal-save-close-button" class="primary-button">Guardar y Cerrar</button>
-                    <button id="modal-pdf-button">💾 Guardar como PDF</button>
+                    <button id="modal-print-button">🖨️ Guardar / Imprimir</button>
                 </div>
             </footer>
         </div>
