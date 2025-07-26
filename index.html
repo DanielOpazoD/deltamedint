@@ -13,13 +13,14 @@
 </head>
 <body>
 
-    <div class="main-container"> <!-- Contenedor principal para controlar el ancho -->
+    <div class="main-container">
         <header>
             <h1>💻 Guía de Estudio: Medicina Interna</h1>
             <div class="global-actions">
                 <button disabled>✨ Asistente IA</button>
-                <button disabled>⬆️ Importar Todo</button>
-                <button disabled>⬇️ Exportar Todo</button>
+                <button id="import-all-btn">⬆️ Importar Todo</button>
+                <button id="export-all-btn">⬇️ Exportar Todo</button>
+                <input type="file" id="import-file-input" class="hidden" accept=".json">
             </div>
         </header>
 
@@ -46,13 +47,9 @@
     <div id="notes-modal" class="hidden">
         <div class="modal-overlay"></div>
         <div class="modal-content">
-            <header class="modal-header">
-                <!-- Contenido del header (pestañas y título) se genera con JS -->
-            </header>
+            <header class="modal-header"></header>
             <div class="modal-body">
-                <div id="toolbar-container">
-                    <!-- La barra de herramientas de Quill se generará aquí -->
-                </div>
+                <div id="toolbar-container"></div>
                 <div id="editor-container"></div>
             </div>
             <footer class="modal-footer">
@@ -66,5 +63,8 @@
             </footer>
         </div>
     </div>
+
+    <!-- ======== CONTENEDOR OCULTO PARA IMPRESIÓN DE SECCIONES ======== -->
+    <div id="print-stage" class="hidden"></div>
 </body>
 </html>

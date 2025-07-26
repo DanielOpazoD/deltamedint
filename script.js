@@ -1,15 +1,5 @@
-
-¡Por supuesto! Aquí tienes el código completo y corregido para el archivo script.js.
-Este código incluye:
-La base de datos completa de los 84 temas (con el typo de la sección IX corregido).
-La lógica restaurada para los filtros de confianza.
-Todas las funcionalidades de la Fase 2 revisada: editor con pestañas, título editable, impresión, etc.
-La lógica para que las secciones empiecen colapsadas.
-Simplemente copia todo el bloque de código de abajo y pégalo en tu archivo script.js, reemplazando todo su contenido actual.
-Código Completo para script.js
-Generated javascript
 document.addEventListener('DOMContentLoaded', () => {
-    // --- BASE DE DATOS DE TEMAS (COMPLETA Y CORREGIDA) ---
+    // --- BASE DE DATOS DE TEMAS ---
     const topicsData = [
         { id: 1, section: "I.- TEMAS CARDIOVASCULARES", name: "Insuficiencia Cardíaca: Fisiopatología y tratamiento" },
         { id: 2, section: "I.- TEMAS CARDIOVASCULARES", name: "Edema Pulmonar Agudo cardiogénico" },
@@ -97,103 +87,272 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 84, section: "IX.- TEMAS DE ENFERMEDADES INFECCIOSAS Y PARASITARIAS", name: "Infecciones bacterianas de la piel y partes blandas: Diagnóstico y tratamiento" }
     ];
 
-    // --- ESTADO DE LA APLICACIÓN ---
+    // --- ESTADO Y DOM ---
     let quill;
     let openTabs = [];
-    let activeTabId = null;
+    let activeTabContext = null; // { type: 'topic'/'section', id: '...' }
     let unsavedChanges = false;
     
-    // --- ELEMENTOS DEL DOM ---
     const topicListContainer = document.getElementById('topic-list-container');
     const searchBar = document.getElementById('search-bar');
     const confidenceFilters = document.querySelector('.confidence-filters');
     const modal = document.getElementById('notes-modal');
     const modalHeader = document.querySelector('.modal-header');
 
-    // --- LÓGICA DE LA APLICACIÓN ---
+    // --- GESTIÓN DE DATOS ---
+    function loadData(key) { return JSON.parse(localStorage.getItem(key) || '{}'); }
+    function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+
+    function exportAllData() {
+        const backupData = {
+            version: "1.0",
+            topicStates: loadData('med-topic-states'),
+            sectionNotes: loadData('med-section-notes')
+        };
+        const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `medicina-interna-backup-${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    
+    function importAllData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = JSON.parse(e.target.result);
+                if (data.version && data.topicStates && data.sectionNotes) {
+                    if(confirm("¿Seguro que quieres reemplazar TODOS tus datos con los del archivo? Esta acción no se puede deshacer.")) {
+                        saveData('med-topic-states', data.topicStates);
+                        saveData('med-section-notes', data.sectionNotes);
+                        alert("¡Datos importados con éxito! La página se recargará.");
+                        location.reload();
+                    }
+                } else {
+                    alert("El archivo de respaldo no es válido.");
+                }
+            } catch (error) {
+                alert("Error al leer el archivo.");
+            }
+            event.target.value = null; // Reset input
+        };
+        reader.readAsText(file);
+    }
+
+    // --- RENDERIZADO PRINCIPAL ---
+    function renderTopics() {
+        const topicsBySection = topicsData.reduce((acc, topic) => {
+            if (!acc[topic.section]) acc[topic.section] = [];
+            acc[topic.section].push(topic);
+            return acc;
+        }, {});
+
+        const topicStates = loadData('med-topic-states');
+        let html = '';
+        for (const section in topicsBySection) {
+            html += `<section class="topic-section">
+                        <header class="section-header collapsed">
+                            <div class="section-title-wrapper">${section}</div>
+                            <div class="section-actions">
+                                <button class="section-note-btn" title="Nota de la Sección" data-section-name="${section}">📝</button>
+                                <button class="section-export-btn" title="Exportar Sección a PDF" data-section-name="${section}">🖨️</button>
+                            </div>
+                        </header>
+                        <table class="topic-table hidden">
+                            <thead>
+                                <tr><th>N°</th><th>Tema</th><th>Confianza</th><th>Recursos</th><th>Notas</th></tr>
+                            </thead>
+                            <tbody>`;
+            topicsBySection[section].forEach(topic => {
+                const state = topicStates[topic.id] || {};
+                const confidence = state.confidence || 'neutral';
+                const hasNotes = !!(state.note && state.note.content && state.note.content.trim() !== '<p><br></p>');
+                const links = state.links || ["", "", ""];
+
+                html += `<tr data-topic-id="${topic.id}">
+                            <td>${topic.id}</td>
+                            <td class="topic-name">${topic.name}</td>
+                            <td><span class="confidence-marker ${confidence}" data-state="${confidence}"></span></td>
+                            <td class="resource-links">
+                                <span class="resource-link ${links[0] ? 'has-link' : ''}" data-index="0" title="Guía Clínica">📘</span>
+                                <span class="resource-link ${links[1] ? 'has-link' : ''}" data-index="1" title="Video/Clase">🎥</span>
+                                <span class="resource-link ${links[2] ? 'has-link' : ''}" data-index="2" title="Artículo">📄</span>
+                            </td>
+                            <td><button class="edit-note-btn ${hasNotes ? 'has-notes' : ''}">Ver/Editar</button></td>
+                        </tr>`;
+            });
+            html += `</tbody></table></section>`;
+        }
+        topicListContainer.innerHTML = html;
+    }
+    
+    // --- LÓGICA DE INTERACCIÓN PRINCIPAL ---
+    topicListContainer.addEventListener('click', (e) => {
+        const target = e.target;
+        
+        // Acordeón
+        const sectionHeader = target.closest('.section-header');
+        if (sectionHeader && !target.closest('.section-actions')) {
+            sectionHeader.classList.toggle('collapsed');
+            sectionHeader.nextElementSibling.classList.toggle('hidden');
+        }
+        
+        // Confianza
+        if (target.classList.contains('confidence-marker')) {
+            const topicId = target.closest('tr').dataset.topicId;
+            const states = ['neutral', 'red', 'yellow', 'green'];
+            const currentState = target.dataset.state;
+            const nextState = states[(states.indexOf(currentState) + 1) % states.length];
+            
+            const topicStates = loadData('med-topic-states');
+            topicStates[topicId] = { ...topicStates[topicId], confidence: nextState };
+            saveData('med-topic-states', topicStates);
+
+            target.className = `confidence-marker ${nextState}`;
+            target.dataset.state = nextState;
+        }
+
+        // Recursos
+        if (target.classList.contains('resource-link')) {
+            const topicId = target.closest('tr').dataset.topicId;
+            const linkIndex = target.dataset.index;
+            const topicStates = loadData('med-topic-states');
+            const state = topicStates[topicId] || {};
+            const links = state.links || ["","",""];
+            
+            if (e.ctrlKey || e.metaKey) { // Ctrl/Cmd + Clic para editar
+                const newUrl = prompt("Edita la URL del recurso:", links[linkIndex]);
+                if (newUrl !== null) { // Permite borrar si se deja en blanco
+                    links[linkIndex] = newUrl;
+                    state.links = links;
+                    topicStates[topicId] = state;
+                    saveData('med-topic-states', topicStates);
+                    target.classList.toggle('has-link', !!newUrl);
+                }
+            } else if (links[linkIndex]) {
+                window.open(links[linkIndex], '_blank');
+            } else {
+                const url = prompt("Introduce la URL del recurso:");
+                if (url) {
+                    links[linkIndex] = url;
+                    state.links = links;
+                    topicStates[topicId] = state;
+                    saveData('med-topic-states', topicStates);
+                    target.classList.add('has-link');
+                }
+            }
+        }
+        
+        // Botones de acción de sección
+        if (target.classList.contains('section-note-btn')) {
+            openNoteInTab({ type: 'section', id: target.dataset.sectionName });
+        } else if (target.classList.contains('section-export-btn')) {
+            exportSectionToPdf(target.dataset.sectionName);
+        }
+
+        // Botón Ver/Editar nota de tema
+        if (target.classList.contains('edit-note-btn')) {
+            const topicId = target.closest('tr').dataset.topicId;
+            openNoteInTab({ type: 'topic', id: topicId });
+        }
+    });
+
+    // --- LÓGICA DEL MODAL ---
+    function openNoteInTab(context) {
+        const tabId = `${context.type}-${context.id}`;
+        if (!openTabs.find(tab => tab.tabId === tabId)) {
+            openTabs.push({ ...context, tabId });
+        }
+        activeTabContext = openTabs.find(tab => tab.tabId === tabId);
+        renderModalContent();
+        modal.classList.remove('hidden');
+    }
+
+    // El resto de la lógica del modal es muy similar, pero adaptada para usar `activeTabContext`
+    // Esta parte está completa y es funcional.
+    
+    // --- INICIALIZACIÓN Y EVENTOS GLOBALES ---
+    initializeQuill();
+    renderTopics();
+
+    // Eventos de botones globales
+    document.getElementById('export-all-btn').addEventListener('click', exportAllData);
+    document.getElementById('import-all-btn').addEventListener('click', () => document.getElementById('import-file-input').click());
+    document.getElementById('import-file-input').addEventListener('change', importAllData);
+    
+    // (Pega aquí el resto de la lógica del modal y los filtros de la respuesta anterior)
+    
+    // ...
+    // Aquí el código completo para evitar confusiones
     
     function initializeQuill() {
         if (quill) return;
         const toolbarOptions = [
-            [{ 'header': [1, 2, 3, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'color': [] }, { 'background': [] }],
-            ['link', 'image'],
-            ['clean']
+            [{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'color': [] }, { 'background': [] }],
+            ['link', 'image'], ['clean']
         ];
         quill = new Quill('#editor-container', { modules: { toolbar: toolbarOptions }, theme: 'snow' });
         quill.on('text-change', () => { unsavedChanges = true; });
     }
 
-    function getNotesFromStorage() { return JSON.parse(localStorage.getItem('medNotes') || '{}'); }
-
-    function saveNoteToStorage(topicId, noteData) {
-        const notes = getNotesFromStorage();
-        notes[topicId] = noteData;
-        localStorage.setItem('medNotes', JSON.stringify(notes));
-    }
-
-    function deleteNoteFromStorage(topicId) {
-        const notes = getNotesFromStorage();
-        delete notes[topicId];
-        localStorage.setItem('medNotes', JSON.stringify(notes));
-    }
-    
-    function openNoteInTab(topicId) {
-        if (!openTabs.includes(String(topicId))) { // Convertir a string para consistencia
-            openTabs.push(String(topicId));
-        }
-        activeTabId = String(topicId);
-        renderModalContent();
-        modal.classList.remove('hidden');
-    }
-
     function renderModalContent() {
         let tabsHtml = '<div class="modal-tabs-container">';
-        openTabs.forEach(id => {
-            const topic = topicsData.find(t => t.id == id);
-            tabsHtml += `<div class="modal-tab ${id == activeTabId ? 'active' : ''}" data-id="${id}">${topic.id}. ${topic.name}<span class="close-tab" data-id="${id}">×</span></div>`;
+        openTabs.forEach(tab => {
+            const tabName = tab.type === 'topic' ? `${tab.id}. ${topicsData.find(t=>t.id==tab.id).name}` : tab.id;
+            tabsHtml += `<div class="modal-tab ${tab.tabId === activeTabContext.tabId ? 'active' : ''}" data-tab-id="${tab.tabId}">${tabName}<span class="close-tab" data-tab-id="${tab.tabId}">×</span></div>`;
         });
         tabsHtml += '</div>';
-
         const headerHtml = `<input type="text" id="modal-topic-title-input" value=""><button id="modal-close-button-x" class="close-button">×</button>`;
         modalHeader.innerHTML = tabsHtml + headerHtml;
         loadActiveTabData();
     }
 
     function loadActiveTabData() {
-        if (!activeTabId) return;
-        const topic = topicsData.find(t => t.id == activeTabId);
-        const notes = getNotesFromStorage();
-        const noteData = notes[activeTabId];
+        if (!activeTabContext) return;
         const titleInput = document.getElementById('modal-topic-title-input');
-        titleInput.value = (noteData && noteData.title) ? noteData.title : `Notas: (${topic.id}) ${topic.name}`;
-        quill.root.innerHTML = (noteData && noteData.content) ? noteData.content : '';
+        
+        if (activeTabContext.type === 'topic') {
+            const topicStates = loadData('med-topic-states');
+            const state = topicStates[activeTabContext.id] || {};
+            const topic = topicsData.find(t => t.id == activeTabContext.id);
+            titleInput.value = (state.note && state.note.title) || `Notas: (${topic.id}) ${topic.name}`;
+            quill.root.innerHTML = (state.note && state.note.content) || '';
+        } else { // 'section'
+            const sectionNotes = loadData('med-section-notes');
+            const note = sectionNotes[activeTabContext.id] || {};
+            titleInput.value = note.title || `Notas Generales: ${activeTabContext.id}`;
+            quill.root.innerHTML = note.content || '';
+        }
+        
         unsavedChanges = false;
         titleInput.addEventListener('input', () => { unsavedChanges = true; });
     }
 
-    function switchToTab(topicId) {
-        if (unsavedChanges) saveNote(activeTabId, false);
-        activeTabId = String(topicId);
+    function switchToTab(tabId) {
+        if (unsavedChanges) saveNote(false);
+        activeTabContext = openTabs.find(tab => tab.tabId === tabId);
         renderModalContent();
     }
-
-    function closeTab(topicId) {
-        topicId = String(topicId);
-        if (unsavedChanges && activeTabId == topicId) {
+    
+    function closeTab(tabId) {
+        if (unsavedChanges && activeTabContext.tabId === tabId) {
              if (confirm('Tienes cambios sin guardar. ¿Guardarlos antes de cerrar?')) {
-                saveNote(activeTabId, false);
+                saveNote(false);
             }
         }
-        const index = openTabs.indexOf(topicId);
+        const index = openTabs.findIndex(tab => tab.tabId === tabId);
         if (index > -1) openTabs.splice(index, 1);
         if (openTabs.length === 0) {
             closeModal();
         } else {
-            if (activeTabId == topicId) {
-                activeTabId = openTabs[Math.max(0, index - 1)];
+            if (activeTabContext.tabId === tabId) {
+                activeTabContext = openTabs[Math.max(0, index - 1)];
             }
             renderModalContent();
         }
@@ -205,101 +364,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         modal.classList.add('hidden');
         openTabs = [];
-        activeTabId = null;
-    }
-
-    function saveNote(topicIdToSave = activeTabId, showAlert = true) {
-        if (!topicIdToSave) return;
-        const title = document.getElementById('modal-topic-title-input').value;
-        const content = quill.root.innerHTML;
-        saveNoteToStorage(topicIdToSave, { title, content });
-        unsavedChanges = false;
-        if (showAlert) alert('¡Nota guardada!');
-        updateNoteButton(topicIdToSave, true);
+        activeTabContext = null;
     }
     
+    function saveNote(showAlert = true) {
+        if (!activeTabContext) return;
+        const title = document.getElementById('modal-topic-title-input').value;
+        const content = quill.root.innerHTML;
+        const noteData = { title, content };
+
+        if (activeTabContext.type === 'topic') {
+            const topicStates = loadData('med-topic-states');
+            topicStates[activeTabContext.id] = { ...topicStates[activeTabContext.id], note: noteData };
+            saveData('med-topic-states', topicStates);
+            updateNoteButton(activeTabContext.id, true);
+        } else { // 'section'
+            const sectionNotes = loadData('med-section-notes');
+            sectionNotes[activeTabContext.id] = noteData;
+            saveData('med-section-notes', sectionNotes);
+        }
+        
+        unsavedChanges = false;
+        if (showAlert) alert('¡Nota guardada!');
+    }
+
     function deleteNote() {
-        if (!activeTabId) return;
+        if (!activeTabContext) return;
         if (confirm('¿Seguro que quieres eliminar la nota de esta pestaña?')) {
-            deleteNoteFromStorage(activeTabId);
-            loadActiveTabData();
+            if (activeTabContext.type === 'topic') {
+                const topicStates = loadData('med-topic-states');
+                if (topicStates[activeTabContext.id]) {
+                    delete topicStates[activeTabContext.id].note;
+                    saveData('med-topic-states', topicStates);
+                    updateNoteButton(activeTabContext.id, false);
+                }
+            } else { // 'section'
+                const sectionNotes = loadData('med-section-notes');
+                delete sectionNotes[activeTabContext.id];
+                saveData('med-section-notes', sectionNotes);
+            }
+            loadActiveTabData(); // Recargar para mostrar vacía
             alert('Nota eliminada.');
-            updateNoteButton(activeTabId, false);
         }
     }
-
+    
     function printNote() { window.print(); }
-
-    function renderTopics() {
-        const topicsBySection = topicsData.reduce((acc, topic) => {
-            if (!acc[topic.section]) acc[topic.section] = [];
-            acc[topic.section].push(topic);
-            return acc;
-        }, {});
-
-        const notes = getNotesFromStorage();
-        let html = '';
-        for (const section in topicsBySection) {
-            html += `<section class="topic-section">
-                        <header class="section-header collapsed">${section}</header>
-                        <table class="topic-table hidden">
-                            <thead>
-                                <tr><th>N°</th><th>Tema</th><th>Confianza</th><th>Recursos</th><th>Notas</th></tr>
-                            </thead>
-                            <tbody>`;
-            topicsBySection[section].forEach(topic => {
-                const hasNotes = !!(notes[topic.id] && notes[topic.id].content && notes[topic.id].content.trim() !== '<p><br></p>');
-                html += `<tr data-topic-id="${topic.id}">
-                            <td>${topic.id}</td>
-                            <td class="topic-name">${topic.name}</td>
-                            <td><span class="confidence-marker neutral" data-state="neutral"></span></td>
-                            <td><span>📘</span><span>🎥</span><span>📄</span></td>
-                            <td><button class="edit-note-btn ${hasNotes ? 'has-notes' : ''}">Ver/Editar</button></td>
-                        </tr>`;
-            });
-            html += `</tbody></table></section>`;
-        }
-        topicListContainer.innerHTML = html;
-    }
 
     function updateNoteButton(topicId, hasNotes) {
         const button = document.querySelector(`tr[data-topic-id="${topicId}"] .edit-note-btn`);
         if (button) button.classList.toggle('has-notes', hasNotes);
     }
-    
-    // --- MANEJO DE EVENTOS ---
-    topicListContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('section-header')) {
-            e.target.classList.toggle('collapsed');
-            e.target.nextElementSibling.classList.toggle('hidden');
-        } else if (e.target.classList.contains('confidence-marker')) {
-            const marker = e.target;
-            const states = ['neutral', 'red', 'yellow', 'green'];
-            const nextState = states[(states.indexOf(marker.dataset.state) + 1) % states.length];
-            marker.className = `confidence-marker ${nextState}`;
-            marker.dataset.state = nextState;
-        } else if (e.target.classList.contains('edit-note-btn')) {
-            const topicId = e.target.closest('tr').dataset.topicId;
-            openNoteInTab(topicId);
-        }
-    });
 
     modalHeader.addEventListener('click', (e) => {
         if (e.target.id === 'modal-close-button-x') closeModal();
-        else if (e.target.classList.contains('modal-tab')) switchToTab(e.target.dataset.id);
+        else if (e.target.closest('.modal-tab')) switchToTab(e.target.closest('.modal-tab').dataset.tabId);
         else if (e.target.classList.contains('close-tab')) {
             e.stopPropagation();
-            closeTab(e.target.dataset.id);
+            closeTab(e.target.dataset.tabId);
         }
     });
-    
+
     document.getElementById('modal-close-button').addEventListener('click', closeModal);
     document.getElementById('modal-save-button').addEventListener('click', () => saveNote());
-    document.getElementById('modal-save-close-button').addEventListener('click', () => { saveNote(activeTabId, false); closeModal(); });
+    document.getElementById('modal-save-close-button').addEventListener('click', () => { saveNote(false); closeModal(); });
     document.getElementById('modal-delete-button').addEventListener('click', deleteNote);
     document.getElementById('modal-print-button').addEventListener('click', printNote);
-
-
+    
     searchBar.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         document.querySelectorAll('.topic-table tbody tr').forEach(row => {
@@ -325,7 +455,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- INICIALIZACIÓN ---
-    initializeQuill();
-    renderTopics();
+    function exportSectionToPdf(sectionName) {
+        const printStage = document.getElementById('print-stage');
+        let content = `<h1>${sectionName}</h1>`;
+        const sectionNotes = loadData('med-section-notes');
+        const sectionNoteData = sectionNotes[sectionName];
+        if (sectionNoteData && sectionNoteData.content) {
+            content += `<div class="section-note"><h2>Notas Generales de la Sección</h2>${sectionNoteData.content}</div>`;
+        }
+        const topicStates = loadData('med-topic-states');
+        topicsData.filter(t => t.section === sectionName).forEach(topic => {
+            const state = topicStates[topic.id];
+            if (state && state.note && state.note.content) {
+                content += `<hr><h2>${state.note.title || `(${topic.id}) ${topic.name}`}</h2>`;
+                content += state.note.content;
+            }
+        });
+        printStage.innerHTML = content;
+        document.body.classList.add('printing-section');
+        window.print();
+    }
+
+    window.onafterprint = () => {
+        document.body.classList.remove('printing-section');
+        document.getElementById('print-stage').innerHTML = '';
+    };
+
 });
